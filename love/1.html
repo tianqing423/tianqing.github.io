@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title></title>
+  </head>
+  <style>
+    pre {
+  border: 1px solid blue;
+}
+  </style>
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+  var fileControl = document.querySelector('#file_input');
+  var filesDiv = document.querySelector('#files');
+  
+  fileControl.addEventListener('change', function(event) {
+    var files = event.target.files;
+    var fileList = [];
+    var list = "";
+    for (var i = 0, len = files.length; i < len; i++) {
+      fileList.push(files[i].name);
+    }
+    for(var i = 0, len = fileList.length; i < len;i++){
+      list = list + ',"'+fileList[i]+'"';
+    }
+    console.log(list);
+ 
+    filesDiv.innerHTML = fileList.join('\n');
+    //debugger;
+  });
+});
+  </script>
+  
+  <script>
+            var smallImgLen = $('.small_bigWrap a').length;
+            var bigImgLen = $('.big_bigImgWrap img').length;
+            oc_lun_img();
+            //点击小图片换大图片
+            $('.small_bigWrap a img').on('click', function() {
+                $(".detailInfoLeft").addClass("dispaly_blo");
+                oc_lun($(this));
+            });
+            var img_src = "";
+
+            function oc_lun(obj) {
+                img_src = obj.attr("data-src");
+                img_pra_index = obj.parent().index();
+                $('.big_bigImgWrap img').attr('src', img_src);
+                oc_lun_img(img_pra_index);
+            }
+            //关闭
+            $(".i_close").click(function(event) {
+                event.stopPropagation();
+                $(".detailInfoLeft").removeClass("dispaly_blo");
+            });
+
+            function oc_lun_img(i) {
+                //点击右小图片的next按钮.
+                $('.smallNext').on('click', function(event) {
+                    event.stopPropagation();
+                    i++;
+                    if(i == smallImgLen) {
+                        i = 0;
+                    }
+                    $('.big_bigImgWrap img').attr('src', $('.small_bigWrap a').eq(i).find("img").attr('data-src'));
+                })
+                //点击左小图片的prev按钮.
+                $('.smallPrev').on('click', function(event) {
+                    event.stopPropagation();
+                    i--;
+                    if(i <= -1) {
+                        i = smallImgLen - 1;
+                    }
+                    $('.big_bigImgWrap img').attr('src', $('.small_bigWrap a').eq(i).find("img").attr('data-src'));
+                })
+            }
+        </script>
+  <body>
+  <input type="file" id="file_input" webkitdirectory directory />
+<p>Files:</p>
+<pre id="files">
+ 
+</pre>
+  </body>
